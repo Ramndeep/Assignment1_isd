@@ -19,4 +19,32 @@ class TestBankAccount(unittest.TestCase):
 
     def test_deposit(self):
         account = BankAccount(20019, 1010, 6764.67)
-        account.deposit
+        account.deposit(500.00)
+        self.assertEqual(account.balance, 7264.67)
+        with self.assertRaises(ValueError):
+            account.deposit(-100.00)
+
+    def test_withdraw(self):
+        account = BankAccount(20019, 1010, 6764.67)
+        account.withdraw(1000.00)
+        self.assertEqual(account.balance, 5764.67)
+        with self.assertRaises(ValueError):
+            account.withdraw(-100.00)
+        with self.assertRaises(ValueError):
+            account.withdraw(7000.00)
+
+    def test_str_method(self):
+        account = BankAccount(20019, 1010, 6764.67)
+        self.assertEqual(str(account), "Account Number: 20019, Client Number: 1010, Balance: $6764.67")
+
+    def test_non_numeric_balance(self):
+        with self.assertRaises(ValueError):
+            BankAccount(20019, 1010, "not_a_number")
+
+    def test_invalid_account_number(self):
+        with self.assertRaises(ValueError):
+            BankAccount("not_a_number", 1010, 6764.67)
+
+    def test_invalid_client_number(self):
+        with self.assertRaises(ValueError):
+            BankAccount(20019, "not_a_number", 6764.67)
