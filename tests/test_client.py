@@ -53,3 +53,7 @@ class TestClient(unittest.TestCase):
     def test_str_method(self):
         client = Client(1010, "Susan", "Clark", "susanclark@pixell.com")
         self.assertEqual(str(client), "Clark, Susan [1010] - susanclark@pixell.com\n")
+
+
+if __name__ == "__main__":
+    unittest.main()
