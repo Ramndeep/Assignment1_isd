@@ -48,3 +48,6 @@ class TestBankAccount(unittest.TestCase):
     def test_invalid_client_number(self):
         with self.assertRaises(ValueError):
             BankAccount(20019, "not_a_number", 6764.67)
+
+if __name__ == "__main__":
+    unittest.main()

@@ -4,14 +4,14 @@ Author: Ramandeep kaur
 """
 
 class BankAccount:
-    def __init__(self, account_number, client_number, balance):
+    def __init__(self, account_number, client_number, balance=0.0):
         """
         Initialize a new BankAccount instance.
 
         Args:
             account_number (int): The account's unique number.
             client_number (int): The client's unique number.
-            balance (float): The account balance.
+            balance (float): The account balance (default is 0.0).
 
         Raises:
             ValueError: If account_number or client_number is not an integer.
