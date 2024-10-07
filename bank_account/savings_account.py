@@ -2,27 +2,20 @@ from bank_account.bank_account import BankAccount
 from datetime import datetime
 
 class SavingsAccount(BankAccount):
-    def __init__(self, account_number, client_number, balance, interest_rate, date_created):
+    def __init__(self, account_number, client_number, balance, minimum_balance=100.0):
         super().__init__(account_number, client_number, balance)
 
-        # Validate and set interest rate
-        if not isinstance(interest_rate, (int, float)):
-            raise ValueError("Interest rate must be a number.")
-        self._interest_rate = float(interest_rate)
-
-        # Validate and set creation date
-        if not isinstance(date_created, str):
-            raise ValueError("Date created must be a string in YYYY-MM-DD format.")
-        self._date_created = datetime.strptime(date_created, "%Y-%m-%d")
+        self._minimum_balance = minimum_balance
 
     @property
-    def interest_rate(self):
-        return self._interest_rate
+    def minimum_balance(self):
+        return self._minimum_balance
 
-    def calculate_interest(self):
-        """Calculates the interest based on the current balance."""
-        return self.balance * (self.interest_rate / 100)
+    def get_service_charges(self):
+        if self.balance < self.minimum_balance:
+            return 5.0  # Example service charge for falling below minimum balance
+        return 0.0
 
     def __str__(self):
-        return super().__str__() + f"Interest Rate: {self._interest_rate}%\n"
+        return super().__str__() + f"Minimum Balance: ${self._minimum_balance:.2f}\n"
 
