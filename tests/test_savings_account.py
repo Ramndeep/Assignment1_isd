@@ -11,31 +11,34 @@ import unittest
 from bank_account.savings_account import SavingsAccount
 
 class TestSavingsAccount(unittest.TestCase):
-    def test_valid_account(self):
-        account = SavingsAccount(20020, 1011, 1500.00, 2.5, "2022-01-01")
-        self.assertEqual(account.account_number, 20020)
-        self.assertEqual(account.client_number, 1011)
-        self.assertEqual(account.balance, 1500.00)
-        self.assertEqual(account.interest_rate, 2.5)
 
-    def test_invalid_interest_rate(self):
+    def test_init_attributes(self):
+        account = SavingsAccount(12345, 67890, 500.0)
+        self.assertEqual(account.account_number, 12345)
+        self.assertEqual(account.client_number, 67890)
+        self.assertEqual(account.balance, 500.0)
+        self.assertEqual(account.minimum_balance, 100.0)  # Default minimum balance
+
+    def test_init_invalid_minimum_balance(self):
         with self.assertRaises(ValueError):
-            SavingsAccount(20020, 1011, 1500.00, "invalid_rate", "2022-01-01")
+            SavingsAccount(12345, 67890, 500.0, minimum_balance=-50)
 
-    def test_invalid_date_created(self):
-        with self.assertRaises(ValueError):
-            SavingsAccount(20020, 1011, 1500.00, 2.5, 12345)
+    def test_get_service_charges_above_minimum(self):
+        account = SavingsAccount(12345, 67890, 150.0)
+        self.assertEqual(account.get_service_charges(), 0.0)
 
-    def test_calculate_interest(self):
-        account = SavingsAccount(20020, 1011, 2000.00, 5.0, "2022-01-01")
-        self.assertAlmostEqual(account.calculate_interest(), 100.0)  # 5% of 2000 is 100
+    def test_get_service_charges_equal_to_minimum(self):
+        account = SavingsAccount(12345, 67890, 100.0)
+        self.assertEqual(account.get_service_charges(), 0.0)
+
+    def test_get_service_charges_below_minimum(self):
+        account = SavingsAccount(12345, 67890, 50.0)
+        self.assertEqual(account.get_service_charges(), 5.0)
 
     def test_str_method(self):
-        account = SavingsAccount(20020, 1011, 1500.00, 2.5, "2022-01-01")
-        expected_str = ("Account Number: 20020, Client Number: 1011, Balance: $1500.00\n"
-                        "Interest Rate: 2.5%\n")
+        account = SavingsAccount(12345, 67890, 500.0)
+        expected_str = "Account Number: 12345 Balance: $500.00\nMinimum Balance: $100.00\n"
         self.assertEqual(str(account), expected_str)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
-
